@@ -1,0 +1,19 @@
+{
+  "name": "gmblr",
+  "version": "1.0.0",
+  "description": "Record and settle wagers between friends",
+  "main": "src/server.js",
+  "repository": "git@github.com:willbach/gmblr.git",
+  "author": "Will Galebach <willbach@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "./scripts/test.sh"
+  },
+  "dependencies": {
+    "assert": "^1.4.1",
+    "ethereumjs-util": "^5.1.2",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.7",
+    "supertest": "^3.0.0"
+  }
+}
