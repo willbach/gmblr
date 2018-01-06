@@ -3,14 +3,26 @@ const ethUtil = require('ethereumjs-util')
 const creditProtocolUtil = {}
 
 //derive private key from signature and check it against address
-creditProtocolUtil.verifySignature = (signature, transaction) => {
-    const sigAddress = creditProtocolUtil.signatureToAddress(signature, transaction)
+creditProtocolUtil.determineSigner = (transaction, signature) => {
+    const sigAddress = creditProtocolUtil.signatureToAddress(transaction, signature)
+    if(transaction.creditorAddress === sigAddress) {
+        return 'creditor'
+    } else if(transaction.debtorAddress === sigAddress) {
+        return 'debtor'
+    } else {
+        return null;
+    }
+}
+
+creditProtocolUtil.verifySignature = (transaction, signature) => {
+    const sigAddress = creditProtocolUtil.signatureToAddress(transaction, signature)
     return transaction.creditorAddress === sigAddress || transaction.debtorAddress === sigAddress
 }
 
-creditProtocolUtil.signatureToAddress = (signature, transaction) => {
+creditProtocolUtil.signatureToAddress = (transaction, signature) => {
     const { v, r, s } = creditProtocolUtil.decomposeSignature(signature)
-    const msgHash = ethUtil.hashPersonalMessage(transaction.hash)
+    let hash = Buffer.from(transaction.hash)
+    const msgHash = ethUtil.hashPersonalMessage(hash)
     const addressBuffer = ethUtil.pubToAddress( ethUtil.ecrecover(msgHash, v, r, s) )
     return hexAddress = addressBuffer.toString('hex')
 }
